@@ -23,6 +23,10 @@ android {
         applicationId "com.appcircle.appcircle_sample_android"
         minSdkVersion 24
         targetSdkVersion 33
+        ndk {
+            // Filter for architectures supported by Flutter.
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        }
         
         if (System.getenv("AC_APPCIRCLE")) {
             def buildNumber = System.getenv("AC_BUILD_NUMBER")
