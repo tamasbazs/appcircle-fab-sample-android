@@ -74,7 +74,7 @@ android {
     }
 }
 
-
+String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
 repositories {
     jcenter()
     mavenCentral()
@@ -83,14 +83,13 @@ repositories {
     }
     maven { url "https://jitpack.io" }
     // maven { url 'https://maven.fabric.io/public' }
-    maven {
-        url '/bitrise/src/appcircle-fab-sample-flutter/flutter_module/build/host/outputs/repo'
-        // This is relative to the location of the build.gradle file
-        // if using a relative path.
-    }
-    maven {
-        url 'https://storage.googleapis.com/download.flutter.io'
-    }
+        maven {
+            url '/bitrise/src/appcircle-fab-sample-flutter/flutter_module/build/host/outputs/repo'
+        }
+        maven {
+            url "$storageUrl/download.flutter.io"
+        }
+
 }
 
 dependencies {
