@@ -134,7 +134,7 @@ dependencies {
     }
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
+    //implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
@@ -171,7 +171,7 @@ dependencies {
     implementation 'com.appdynamics:appdynamics-runtime:20.7.0'
 
     implementation 'com.airbnb.android:lottie:3.6.1'
-    implementation 'com.google.android:flexbox:1.1.0'
+    //implementation 'com.google.android:flexbox:1.1.0'
 
     //ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
