@@ -63,6 +63,7 @@ buildscript {
         maven {
             url "$storageUrl/download.flutter.io"
         }
+        mavenLocal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.1.1'
