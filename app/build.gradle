@@ -39,10 +39,10 @@ android {
 
     productFlavors {
         uat {
-
+            flavorDimensions "default"
         }
         prod {
-
+            flavorDimensions "default"
         }
     }
     buildTypes {
