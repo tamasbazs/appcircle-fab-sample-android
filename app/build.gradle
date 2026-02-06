@@ -15,13 +15,12 @@ buildscript {
     }
 }
 
-packagingOptions {
+android {
+    packagingOptions {
   jniLibs {
     useLegacyPackaging = true
   }
 }
-
-android {
     compileSdkVersion 33
     buildToolsVersion "33.0.1"
     defaultConfig {
