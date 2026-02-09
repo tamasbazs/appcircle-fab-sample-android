@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 //apply plugin: 'io.fabric'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'dev.flutter.flutter-gradle-plugin'
 
 buildscript {
     repositories {
@@ -16,13 +17,29 @@ buildscript {
 }
 
 android {
-    compileSdkVersion 33
-    buildToolsVersion "33.0.1"
+    compileSdkVersion 34
+    buildToolsVersion "34.0.0"
+
+    packagingOptions {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+        // Prevent stripping issues with native libraries
+        doNotStrip '*/armeabi-v7a/*.so'
+        doNotStrip '*/arm64-v8a/*.so'
+        doNotStrip '*/x86/*.so'
+        doNotStrip '*/x86_64/*.so'
+    }
+
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
         applicationId "com.appcircle.appcircle_sample_android"
         minSdkVersion 24
-        targetSdkVersion 33
+        targetSdkVersion 34
+        ndk {
+            // Filter for architectures supported by Flutter.
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86_64'
+        }
         
         if (System.getenv("AC_APPCIRCLE")) {
             def buildNumber = System.getenv("AC_BUILD_NUMBER")
@@ -39,10 +56,10 @@ android {
 
     productFlavors {
         uat {
-
+            flavorDimensions "default"
         }
         prod {
-
+            flavorDimensions "default"
         }
     }
     buildTypes {
@@ -50,12 +67,12 @@ android {
             debuggable false
             signingConfig signingConfigs.debug
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false  // Temporarily disable to avoid AAPT2 issues
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-        lintOptions {
-            checkReleaseBuilds false
-            disable 'MissingTranslation'
+            // Disable native debug symbol extraction to avoid objcopy errors
+            ndk {
+                debugSymbolLevel 'NONE'
+            }
         }
         debug {
             signingConfig signingConfigs.debug
@@ -65,16 +82,28 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
+    }
+
+    aaptOptions {
+        noCompress 'tflite'
+        noCompress 'lite'
+        ignoreAssetsPattern "!.svn:!.git:.*:!CVS:!thumbs.db:!picasa.ini:!*.scc:*~"
+    }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
-
+String storageUrl = System.env.FLUTTER_STORAGE_BASE_URL ?: "https://storage.googleapis.com"
 repositories {
     jcenter()
     mavenCentral()
@@ -83,14 +112,13 @@ repositories {
     }
     maven { url "https://jitpack.io" }
     // maven { url 'https://maven.fabric.io/public' }
-    maven {
-        url '/Users/megu/Documents/Android/appcircle-fab-sample-flutter/flutter_module/build/host/outputs/repo'
-        // This is relative to the location of the build.gradle file
-        // if using a relative path.
-    }
-    maven {
-        url 'https://storage.googleapis.com/download.flutter.io'
-    }
+        maven {
+            url 'file://bitrise/src/appcircle-fab-sample-flutter/flutter_module/build/host/outputs/repo'
+        }
+        maven {
+            url "$storageUrl/download.flutter.io"
+        }
+
 }
 
 dependencies {
@@ -135,15 +163,15 @@ dependencies {
     }
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
+    //implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.7.10"
 
     //implementation project(path: ':blinkid-ui-lib-release')
     implementation 'org.apache.commons:commons-lang3:3.0'
 
-    implementation "com.google.firebase:firebase-dynamic-links-ktx:21.1.0"
+    //implementation "com.google.firebase:firebase-dynamic-links-ktx:21.1.0"
     implementation "com.google.android.gms:play-services-tagmanager:18.0.2"
     implementation "com.google.android.gms:play-services-gcm:17.0.0"
     implementation "com.google.android.gms:play-services-maps:18.1.0"
@@ -172,7 +200,7 @@ dependencies {
     implementation 'com.appdynamics:appdynamics-runtime:20.7.0'
 
     implementation 'com.airbnb.android:lottie:3.6.1'
-    implementation 'com.google.android:flexbox:1.1.0'
+    //implementation 'com.google.android:flexbox:1.1.0'
 
     //ViewPager2
     implementation "androidx.viewpager2:viewpager2:1.0.0"
