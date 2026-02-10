@@ -1,1 +1,14 @@
 include ':app'
+
+pluginManagement {
+    def flutterSdkPath = localProperties.getProperty('flutter.sdk')
+    if (flutterSdkPath == null) {
+        throw new GradleException("Flutter SDK not found. Define 'flutter.sdk' property in the local.properties file.")
+    }
+    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+    repositories {
+        google()
+        mavenCentral()
+        GradlePluginPortal() // Ensure this is present
+    }
+}
