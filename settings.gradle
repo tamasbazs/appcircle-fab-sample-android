@@ -1,14 +1,22 @@
-include ':app'
-
 pluginManagement {
-    def flutterSdkPath = localProperties.getProperty('flutter.sdk')
-    if (flutterSdkPath == null) {
-        throw new GradleException("Flutter SDK not found. Define 'flutter.sdk' property in the local.properties file.")
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
     }
-    includeBuild("$flutterSdkPath/packages/flutter_tools/gradle")
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        GradlePluginPortal() // Ensure this is present
+        maven {
+            url '../flutter_module/build/host/outputs/repo'
+        }
+        maven {
+            url "https://storage.googleapis.com/download.flutter.io"
+        }
     }
 }
+rootProject.name = "Android App"
+include ':app'
