@@ -88,10 +88,9 @@ repositories {
     maven { url "https://jitpack.io" }
     // maven { url 'https://maven.fabric.io/public' }
     maven {
-        url '/bitrise/src/appcircle-fab-sample-flutter/flutter_module/build/host/outputs/repo'
-        // This is relative to the location of the build.gradle file
-        // if using a relative path.
-    }
+            url "${rootProject.projectDir}/flutter-repo"
+            allowInsecureProtocol(true)
+        }
     maven {
         url 'https://storage.googleapis.com/download.flutter.io'
     }
